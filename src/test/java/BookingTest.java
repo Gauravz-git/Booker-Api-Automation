@@ -3,12 +3,15 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.example.Booking;
 import org.example.BookingDates;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class BookingTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void createAndGetBooking() {
 
         // Objects
         BookingDates bookingDates =
@@ -71,10 +74,10 @@ public class BookingTest {
         System.out.println("Deposit Paid: " + depositPaid);
 
         // Actual vs Expected validation
-        assert firstName.equals(booking.getFirstName());
-        assert lastName.equals(booking.getLastName());
-        assert totalPrice == booking.getTotalPrice();
-        assert depositPaid == booking.isDepositPaid();
+        Assert.assertEquals(firstName, booking.getFirstName());
+        Assert.assertEquals(lastName, booking.getLastName());
+        Assert.assertEquals(totalPrice, booking.getTotalPrice());
+        Assert.assertEquals(depositPaid, booking.isDepositPaid());
 
         System.out.println("All booking details validated successfully!");
 
