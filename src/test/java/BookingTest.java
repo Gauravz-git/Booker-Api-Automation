@@ -1,12 +1,10 @@
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.example.Booking;
+import org.example.BookingApi;
 import org.example.BookingDates;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static io.restassured.RestAssured.given;
 
 public class BookingTest {
 
@@ -20,21 +18,11 @@ public class BookingTest {
         Booking booking =
                 new Booking("Gaurav", "Chaudhari", 2000, true, bookingDates);
 
-        RestAssured.baseURI = "https://restful-booker.herokuapp.com";
+        //BookingApi Object
+        BookingApi bookingApi = new BookingApi();
 
-        Response response =
-                given()
-                        .log().all()
-                        .contentType("application/json")
-                        .body(booking)
-                        .when()
-                        .post("/booking")
-                        .then()
-                        .log().all()
-                        .assertThat()
-                        .statusCode(200)
-                        .extract()
-                        .response();
+        //post booking
+        Response response = bookingApi.createBooking(booking);
 
         // Print complete response
         System.out.println(response.asString());
@@ -44,19 +32,8 @@ public class BookingTest {
         int bookingId = jsonPath1.getInt("bookingid");
         System.out.println("Booking ID: " + bookingId);
 
-
-        Response getResponse =
-                given()
-                        .log().all()
-                        .contentType("application/json")
-                        .when()
-                        .get("/booking/" + bookingId)
-                        .then()
-                        .log().all()
-                        .assertThat()
-                        .statusCode(200)
-                        .extract()
-                        .response();
+        //get booking
+        Response getResponse =bookingApi.getBooking(bookingId);
 
         // Print complete get response
         System.out.println("GET Response: " + getResponse.asString());
